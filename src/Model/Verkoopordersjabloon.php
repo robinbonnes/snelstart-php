@@ -30,6 +30,13 @@ final class Verkoopordersjabloon extends SnelstartObject
      */
     private $prijsIngaveExclusiefBtw;
 
+    /**
+     * @var bool|null
+     *
+     * Een vlag dat aangeeft of nieuwe orders automatisch geblokkeerd worden.
+     */
+    private $nieuweOrdersBlokkeren;
+
     public function getOmschrijving(): ?string
     {
         return $this->omschrijving;
@@ -62,6 +69,18 @@ final class Verkoopordersjabloon extends SnelstartObject
     public function setPrijsIngaveExclusiefBtw(bool $prijsIngaveExclusiefBtw): self
     {
         $this->prijsIngaveExclusiefBtw = $prijsIngaveExclusiefBtw;
+
+        return $this;
+    }
+
+    public function getNieuweOrdersBlokkeren(): ?bool
+    {
+        return $this->nieuweOrdersBlokkeren;
+    }
+
+    public function setNieuweOrdersBlokkeren(bool $nieuweOrdersBlokkeren): self
+    {
+        $this->nieuweOrdersBlokkeren = $nieuweOrdersBlokkeren;
 
         return $this;
     }
