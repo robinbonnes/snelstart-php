@@ -4,8 +4,8 @@
  * @project SnelstartApiPHP
  */
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
-require_once __DIR__ . '/../config.php';
+require_once __DIR__.'/../../vendor/autoload.php';
+require_once __DIR__.'/config.php';
 
 global $ledgers;
 
@@ -26,12 +26,12 @@ $connection = new \SnelstartPHP\Secure\V2Connector(
     $client
 );
 
-$grootboekConnector = new \SnelstartPHP\Connector\V2\GrootboekConnector($connection);
-$leverancierConnector = new \SnelstartPHP\Connector\V2\RelatieConnector($connection);
+$grootboekConnector = new \SnelstartPHP\Connector\GrootboekConnector($connection);
+$leverancierConnector = new \SnelstartPHP\Connector\RelatieConnector($connection);
 $klant = null;
 
 /**
- * @var \SnelstartPHP\Model\V2\Relatie $klant
+ * @var \SnelstartPHP\Model\Relatie $klant
  */
 foreach ($leverancierConnector->findAllKlanten() as $klant) {
     break;
@@ -47,34 +47,34 @@ $invoiceAmountIncl = \Money\Money::EUR(1210);
 // 21% tax
 $invoiceAmountExcl = $invoiceAmountIncl->divide(121)->multiply(100);
 
-$verkoopboeking = new \SnelstartPHP\Model\V2\Verkoopboeking();
+$verkoopboeking = new \SnelstartPHP\Model\Verkoopboeking();
 $verkoopboeking->setKlant($klant)
     ->setFactuurdatum(new \DateTimeImmutable())
     ->setVervaldatum(new \DateTimeImmutable("+14 days"))
     ->setFactuurnummer("verkoop-factuur-1")
     ->setFactuurbedrag($invoiceAmountIncl)
     ->setBoekingsregels(...[
-        (new \SnelstartPHP\Model\V2\Boekingsregel())
+        (new \SnelstartPHP\Model\Boekingsregel())
             ->setBedrag($invoiceAmountExcl)
             ->setOmschrijving("Description")
             ->setBtwSoort(\SnelstartPHP\Model\Type\BtwSoort::HOOG())
             ->setGrootboek($omzetDienstenGroot)
     ])
     ->setBtw(...[
-        (new \SnelstartPHP\Model\V2\Btwregel(
+        (new \SnelstartPHP\Model\Btwregel(
             \SnelstartPHP\Model\Type\BtwRegelSoort::VERKOPENHOOG(),
             $invoiceAmountIncl->subtract($invoiceAmountExcl)
         ))
     ])
 ;
 
-$boekingConnector = new \SnelstartPHP\Connector\V2\BoekingConnector($connection);
+$boekingConnector = new \SnelstartPHP\Connector\BoekingConnector($connection);
 $verkoopboeking = $boekingConnector->addVerkoopboeking($verkoopboeking);
 var_dump($verkoopboeking);
 
 echo "Successfully added: " . $verkoopboeking->getUri() . "\n";
-$document = \SnelstartPHP\Model\V2\Document::createFromFile(
-    new SplFileObject(__DIR__ . '/../example.pdf'),
+$document = \SnelstartPHP\Model\Document::createFromFile(
+    new SplFileObject(__DIR__.'/../example.pdf'),
     $verkoopboeking->getId()
 );
 $document = $boekingConnector->addVerkoopboekingDocument($verkoopboeking, $document);

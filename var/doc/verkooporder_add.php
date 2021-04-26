@@ -2,8 +2,8 @@
 
 use SnelstartPHP\Request\ODataRequestData;
 
-require_once __DIR__.'/../../../vendor/autoload.php';
-require_once __DIR__.'/../config.php';
+require_once __DIR__.'/../../vendor/autoload.php';
+require_once __DIR__.'/config.php';
 
 // Prerequisites
 // Relation with id 2
@@ -18,21 +18,21 @@ $connection = new \SnelstartPHP\Secure\V2Connector(
     $accessToken
 );
 
-$klantConnector = new \SnelstartPHP\Connector\V2\RelatieConnector($connection);
+$klantConnector = new \SnelstartPHP\Connector\RelatieConnector($connection);
 $searchFilter = (new ODataRequestData())->setFilter([
     sprintf('Relatiecode eq %s', 2)
 ]);
 $klant = $klantConnector->findAllKlanten($searchFilter, true)->current();
-$artikelConnector = new \SnelstartPHP\Connector\V2\ArtikelConnector($connection);
+$artikelConnector = new \SnelstartPHP\Connector\ArtikelConnector($connection);
 $requestData = new \SnelstartPHP\Request\ODataRequestData();
 $requestData->setFilter([ "Artikelcode eq '308'" ]);
 $requestData->setTop(25);
 $artikelen = $artikelConnector->findAll($requestData, true, null, $klant);
-$verkooporder = new \SnelstartPHP\Model\V2\Verkooporder();
+$verkooporder = new \SnelstartPHP\Model\Verkooporder();
 $lines = [];
 
 foreach ($artikelen as $artikel) {
-    $lines[] = (new \SnelstartPHP\Model\V2\VerkooporderRegel())
+    $lines[] = (new \SnelstartPHP\Model\VerkooporderRegel())
         ->setAantal(1)
         ->setArtikel($artikel)
         ->calculateAndSetTotaal()
@@ -51,5 +51,5 @@ $verkooporder
     ->setRegels(...$lines)
 ;
 
-$verkoopboekingConnector = new \SnelstartPHP\Connector\V2\VerkooporderConnector($connection);
+$verkoopboekingConnector = new \SnelstartPHP\Connector\VerkooporderConnector($connection);
 $verkoopboekingConnector->add($verkooporder);
