@@ -14,10 +14,10 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
+        "php": "^7.2|^8.0",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "guzzlehttp/guzzle": "^6.3|7.*",
+        "guzzlehttp/guzzle": "^6.3|^7.2",
         "moneyphp/money": "^3.0",
         "myclabs/php-enum": "^1.6",
         "psr/cache": "^1.0",
@@ -27,8 +27,8 @@
     },
     "require-dev": {
         "dg/bypass-finals": "^1.1",
-        "phpstan/phpstan": "^0.11.19",
-        "phpunit/phpunit": "^8.4",
+        "phpstan/phpstan": "^0.12.85",
+        "phpunit/phpunit": "8.5.*|^9.0",
         "vimeo/psalm": "^4.0"
     },
     "suggest": {
