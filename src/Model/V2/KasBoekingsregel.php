@@ -31,6 +31,13 @@ final class KasBoekingsregel extends BaseObject
     private $kostenplaats;
 
     /**
+     * De boekingId waarop deze mutatie is geregistreerd
+     *
+     * @var Boeking|null
+     */
+    private $boekingId;
+
+    /**
      * Het omzetbedrag van de regel, exclusief btw.
      *
      * @var Money
@@ -55,6 +62,7 @@ final class KasBoekingsregel extends BaseObject
         "omschrijving",
         "grootboek",
         "kostenplaats",
+        "boekingId",
         "debet",
         "credit",
         "btwSoort",
@@ -83,7 +91,7 @@ final class KasBoekingsregel extends BaseObject
     /**
      * @return Grootboek
      */
-    public function getGrootboek(): Grootboek
+    public function getGrootboek(): ?Grootboek
     {
         return $this->grootboek;
     }
@@ -96,6 +104,27 @@ final class KasBoekingsregel extends BaseObject
     public function setGrootboek(Grootboek $grootboek): self
     {
         $this->grootboek = $grootboek;
+
+        return $this;
+    }
+
+    /**
+     * @param Boeking $boekingId
+     * @return Boeking
+     */
+    public function getBoekingId(): ?Boeking
+    {
+        return  $this->boekingId;
+    }
+
+    /**
+     * @param Boeking $boeking
+     *
+     * @return self
+     */
+    public function setBoekingId(Boeking $boeking): self
+    {
+        $this->boekingId = $boeking;
 
         return $this;
     }
